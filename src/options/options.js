@@ -1,8 +1,8 @@
 import {
-  getProviders, saveProviders, getActiveProviderId, setActiveProviderId,
+  getProviders, getActiveProviderId, setActiveProviderId,
   addProvider, updateProvider, deleteProvider,
 } from '../background/config-store.js';
-import { DEFAULT_PROVIDER_TEMPLATE, STORAGE_KEY } from '../shared/constants.js';
+import { DEFAULT_PROVIDER_TEMPLATE } from '../shared/constants.js';
 
 const providerList = document.getElementById('provider-list');
 const emptyState = document.getElementById('empty-state');
@@ -38,10 +38,15 @@ async function renderList() {
     const li = document.createElement('li');
     li.className = 'provider-item' + (p.id === currentId ? ' active' : '');
     li.dataset.id = p.id;
-    li.innerHTML = `
-      <span>${p.name}</span>
-      ${p.id === activeId ? '<span class="default-badge">★</span>' : ''}
-    `;
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = p.name;
+    li.appendChild(nameSpan);
+    if (p.id === activeId) {
+      const badge = document.createElement('span');
+      badge.className = 'default-badge';
+      badge.textContent = '★';
+      li.appendChild(badge);
+    }
     li.addEventListener('click', () => selectProvider(p.id));
     providerList.appendChild(li);
   }
