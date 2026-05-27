@@ -1,1 +1,26 @@
-<!DOCTYPE html><html><body><p>Loading…</p></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>翻译插件</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <div class="popup-header">
+      <span class="popup-title">云端翻译</span>
+    </div>
+    <div class="popup-body">
+      <label class="field-label">当前模型</label>
+      <select id="provider-select" class="select"></select>
+      <div id="no-provider" class="hint" style="display:none">
+        未配置模型，请先前往
+        <a id="options-link" href="#">选项页</a>
+        添加 Provider。
+      </div>
+    </div>
+  </div>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
