@@ -1,1 +1,73 @@
-<!DOCTYPE html><html><body><p>Loading…</p></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>翻译插件 — 选项</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="notice">
+    ⚠️ API Key 仅保存在本地浏览器，不会上传至任何服务器。
+  </div>
+
+  <div class="layout">
+    <!-- 左侧列表 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-title">模型列表</span>
+        <button id="btn-add" class="btn-add">+ 添加</button>
+      </div>
+      <ul id="provider-list" class="provider-list"></ul>
+    </aside>
+
+    <!-- 右侧表单 -->
+    <main class="form-area">
+      <div id="empty-state" class="empty-state">
+        <p>选择左侧模型进行编辑，或点击"+ 添加"新建。</p>
+      </div>
+
+      <form id="provider-form" class="provider-form" style="display:none">
+        <h2 id="form-title" class="form-title">编辑 Provider</h2>
+
+        <div class="field">
+          <label for="f-name">名称</label>
+          <input id="f-name" type="text" placeholder="Deepseek V3" required>
+        </div>
+        <div class="field">
+          <label for="f-baseurl">BaseURL</label>
+          <input id="f-baseurl" type="url" placeholder="https://api.deepseek.com/v1" required>
+        </div>
+        <div class="field">
+          <label for="f-apikey">API Key</label>
+          <div class="input-row">
+            <input id="f-apikey" type="password" placeholder="sk-..." required>
+            <button type="button" id="btn-toggle-key" class="btn-icon">👁</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-model">模型名称</label>
+          <input id="f-model" type="text" placeholder="deepseek-chat" required>
+        </div>
+        <div class="field">
+          <label for="f-temperature">温度（0-1）</label>
+          <input id="f-temperature" type="number" min="0" max="1" step="0.05" value="0.3">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">保存</button>
+          <button type="button" id="btn-set-default" class="btn-secondary">设为默认</button>
+          <button type="button" id="btn-delete" class="btn-danger">删除</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <div class="shortcut-hint">
+    自定义翻译快捷键 →
+    <a id="shortcut-link" href="#">点击前往快捷键设置</a>
+  </div>
+
+  <script src="options.js" type="module"></script>
+</body>
+</html>
