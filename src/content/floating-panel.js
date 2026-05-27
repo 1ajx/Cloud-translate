@@ -140,6 +140,7 @@ export class FloatingPanel {
       this._footerEl = null;
       this._text = '';
       this._pendingChunks = [];
+      this._rafPending = false;
     }
   }
 
