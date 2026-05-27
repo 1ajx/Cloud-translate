@@ -54,26 +54,29 @@ export async function translate(text, provider, onChunk, onDone, onError) {
   const decoder = new TextDecoder();
   let buffer = '';
 
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
 
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop(); // 保留未完整的行
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); // 保留未完整的行
 
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed === 'data: [DONE]') continue;
-      if (!trimmed.startsWith('data: ')) continue;
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed === 'data: [DONE]') continue;
+        if (!trimmed.startsWith('data: ')) continue;
 
-      try {
-        const json = JSON.parse(trimmed.slice(6));
-        const chunk = json.choices?.[0]?.delta?.content;
-        if (chunk) onChunk(chunk);
-      } catch {}
+        try {
+          const json = JSON.parse(trimmed.slice(6));
+          const chunk = json.choices?.[0]?.delta?.content;
+          if (chunk) onChunk(chunk);
+        } catch {}
+      }
     }
+    onDone();
+  } catch (e) {
+    onError(`流读取错误：${e.message}`);
   }
-
-  onDone();
 }

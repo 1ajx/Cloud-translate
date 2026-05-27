@@ -12,8 +12,8 @@ export function getSelection() {
   return {
     text: sel.toString().trim(),
     position: {
-      x: rect.left + window.scrollX,
-      y: rect.bottom + window.scrollY + 8, // 浮窗出现在选区正下方 8px
+      x: rect.left,
+      y: rect.bottom + 8, // 浮窗出现在选区正下方 8px
     },
   };
 }
