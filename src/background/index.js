@@ -1,5 +1,5 @@
 import { MSG } from '../shared/constants.js';
-import { getActiveProvider } from './config-store.js';
+import { getActiveProvider, setActiveProviderId } from './config-store.js';
 import { translate } from './api-client.js';
 
 // 快捷键触发翻译
@@ -46,9 +46,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 // Popup 切换 Provider
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === MSG.SWITCH_PROVIDER) {
-    import('./config-store.js').then(({ setActiveProviderId }) => {
-      setActiveProviderId(message.payload.id).then(() => sendResponse({ ok: true }));
-    });
+    setActiveProviderId(message.payload.id).then(() => sendResponse({ ok: true }));
     return true; // 异步响应
   }
 });
