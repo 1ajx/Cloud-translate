@@ -391,7 +391,7 @@ class FloatingPanel {
     chatBtn.textContent = '送入聊天';
     chatBtn.addEventListener('click', () => {
       chrome.runtime.sendMessage({
-        type: 'SEND_TO_CHAT',
+        type: MSG.SEND_TO_CHAT,
         payload: { original: this._original, translated: this._text },
       });
       this.destroy();
@@ -484,7 +484,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       panel.showError(message.payload.message);
       break;
     }
-    case 'SEND_TO_CHAT': {
+    case MSG.SEND_TO_CHAT: {
       sidebar.sendTranslation(message.payload.original, message.payload.translated);
       break;
     }

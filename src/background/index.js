@@ -47,10 +47,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
   }
 
-  if (message.type === 'SEND_TO_CHAT') {
+  if (message.type === MSG.SEND_TO_CHAT) {
     const tabId = sender.tab?.id;
     if (tabId) {
-      chrome.tabs.sendMessage(tabId, { type: 'SEND_TO_CHAT', payload: message.payload });
+      chrome.tabs.sendMessage(tabId, { type: MSG.SEND_TO_CHAT, payload: message.payload });
     }
     return false;
   }
