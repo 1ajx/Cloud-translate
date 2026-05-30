@@ -288,8 +288,8 @@ class FloatingPanel {
   }
 
   show(position, originalText) {
-    this._original = originalText || '';
     this.destroy();
+    this._original = originalText || '';
 
     this._host = document.createElement('div');
     this._shadow = this._host.attachShadow({ mode: 'open' });
