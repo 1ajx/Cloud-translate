@@ -53,6 +53,7 @@ class ChatSidebar {
   }
 
   _build() {
+    console.log('[译插件] 开始构建侧边栏 DOM');
     this._host = document.createElement('div');
     this._shadow = this._host.attachShadow({ mode: 'open' });
 
@@ -390,6 +391,7 @@ class FloatingPanel {
     chatBtn.className = 'btn-copy';
     chatBtn.textContent = '送入聊天';
     chatBtn.addEventListener('click', () => {
+      console.log('[译插件] 送入聊天按钮被点击，准备发送消息');
       chrome.runtime.sendMessage({
         type: MSG.SEND_TO_CHAT,
         payload: { original: this._original, translated: this._text },
@@ -485,6 +487,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       break;
     }
     case MSG.SEND_TO_CHAT: {
+      console.log('[译插件] content script 收到 SEND_TO_CHAT，开始展开侧边栏');
       sidebar.sendTranslation(message.payload.original, message.payload.translated);
       break;
     }

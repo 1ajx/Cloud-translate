@@ -49,6 +49,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === MSG.SEND_TO_CHAT) {
     const tabId = sender.tab?.id;
+    console.log('[译插件] background 收到 SEND_TO_CHAT, tabId=', tabId);
     if (tabId) {
       chrome.tabs.sendMessage(tabId, { type: MSG.SEND_TO_CHAT, payload: message.payload });
     }
