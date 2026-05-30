@@ -19,7 +19,7 @@ chrome.commands.onCommand.addListener(async (command) => {
   const { text, position } = selectionResult || {};
   if (!text?.trim()) return;
 
-  chrome.tabs.sendMessage(tab.id, { type: MSG.TRANSLATE_START, payload: { position } });
+  chrome.tabs.sendMessage(tab.id, { type: MSG.TRANSLATE_START, payload: { position, originalText: text } });
 
   const [provider, rolePrompt] = await Promise.all([getActiveProvider(), getRolePrompt()]);
   if (!provider) {
@@ -45,6 +45,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === MSG.SWITCH_PROVIDER) {
     setActiveProviderId(message.payload.id).then(() => sendResponse({ ok: true }));
     return true;
+  }
+
+  if (message.type === 'SEND_TO_CHAT') {
+    const tabId = sender.tab?.id;
+    if (tabId) {
+      chrome.tabs.sendMessage(tabId, { type: 'SEND_TO_CHAT', payload: message.payload });
+    }
+    return false;
   }
 
   if (message.type === MSG.CHAT_SEND) {
