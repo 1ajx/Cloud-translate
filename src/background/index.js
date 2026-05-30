@@ -37,6 +37,7 @@ chrome.commands.onCommand.addListener(async (command) => {
   await translate(
     text,
     provider,
+    undefined,
     (chunk) => chrome.tabs.sendMessage(tab.id, { type: MSG.STREAM_CHUNK, payload: { chunk } }),
     () => chrome.tabs.sendMessage(tab.id, { type: MSG.TRANSLATE_DONE }),
     (message) => chrome.tabs.sendMessage(tab.id, { type: MSG.TRANSLATE_ERROR, payload: { message } }),
