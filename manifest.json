@@ -6,7 +6,8 @@
   "permissions": ["storage", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "background": {
-    "service_worker": "src/background/index.js"
+    "service_worker": "src/background/index.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -39,7 +40,7 @@
     "128": "icons/icon128.png"
   },
   "web_accessible_resources": [{
-    "resources": ["src/content/content.css"],
+    "resources": ["src/content/content.css", "src/content/sidebar.css"],
     "matches": ["<all_urls>"]
   }],
   "default_locale": "zh_CN"
