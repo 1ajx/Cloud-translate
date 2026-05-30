@@ -6,6 +6,10 @@ export const MSG = {
   TRANSLATE_DONE: 'TRANSLATE_DONE',
   TRANSLATE_ERROR: 'TRANSLATE_ERROR',
   SWITCH_PROVIDER: 'SWITCH_PROVIDER',
+  CHAT_SEND: 'CHAT_SEND',
+  CHAT_CHUNK: 'CHAT_CHUNK',
+  CHAT_DONE: 'CHAT_DONE',
+  CHAT_ERROR: 'CHAT_ERROR',
 };
 
 export const DEFAULT_PROVIDER_TEMPLATE = {
@@ -21,4 +25,6 @@ export const DEFAULT_PROVIDER_TEMPLATE = {
 export const STORAGE_KEY = {
   PROVIDERS: 'providers',
   ACTIVE_ID: 'activeProviderId',
+  ROLE_PROMPT: 'rolePrompt',
+  CHAT_HISTORY: 'chatHistory',
 };
