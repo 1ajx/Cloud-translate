@@ -9,10 +9,9 @@
  */
 export async function translate(text, provider, rolePrompt, onChunk, onDone, onError) {
   const url = `${provider.baseURL}/chat/completions`;
-  const baseInstruction = '将用户提供的文本翻译成中文，只输出译文，不加解释。如果原文已是中文，则翻译成英文。';
   const systemContent = rolePrompt
-    ? `你是一名专业翻译。${rolePrompt}。${baseInstruction}`
-    : `你是一名专业翻译。${baseInstruction}`;
+    ? `你是一名专业翻译。默认将文本翻译成中文（若原文已是中文，则翻译成英文）。只输出译文，不加解释。如有额外指定，以指定为准。\n用户指定：${rolePrompt}`
+    : '你是一名专业翻译。将用户提供的文本翻译成中文，只输出译文，不加解释。如果原文已是中文，则翻译成英文。';
 
   const body = {
     model: provider.model,

@@ -14,10 +14,10 @@ export const MSG = {
 };
 
 export const DEFAULT_PROVIDER_TEMPLATE = {
-  name: 'Deepseek V3',
-  baseURL: 'https://api.deepseek.com/v1',
+  name: 'deepseek-v4-flash',
+  baseURL: 'https://api.deepseek.com',
   apiKey: '',
-  model: 'deepseek-chat',
+  model: 'deepseek-v4-flash',
   format: 'openai',
   temperature: 0.3,
   maxTokens: 4096,

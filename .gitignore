@@ -1,0 +1,22 @@
+# Backup files
+*.bak
+*.bak2
+*.bak3
+*.bak4
+*.bak5
+*.bak6
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Superpowers / internal tooling
+.superpowers/
+MYCLAUDE.md
+
+# Docs (internal planning)
+docs/superpowers/
