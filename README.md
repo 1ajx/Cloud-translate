@@ -14,7 +14,7 @@ A Chrome browser extension for AI-powered text selection translation. Bring your
 ## Installation
 
 1. Clone or download this repository
-2. Open Chrome and navigate to `chrome://extensions/`
+2. Open Chrome/Eege and navigate to `chrome://extensions/`
 3. Enable **Developer mode** (top-right toggle)
 4. Click **Load unpacked** and select the project folder
 5. Open the extension options page and enter your API Key(s)
