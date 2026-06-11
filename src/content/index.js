@@ -152,6 +152,11 @@ class ChatSidebar {
     exportBtn.textContent = '导出 MD';
     exportBtn.addEventListener('click', () => this._exportMD());
 
+    const pageTransBtn = document.createElement('button');
+    pageTransBtn.className = 'btn-clear';
+    pageTransBtn.textContent = '页面翻译/还原';
+    pageTransBtn.addEventListener('click', () => window.__ctPageTranslateToggle?.());
+
     const closeBtn = document.createElement('button');
     closeBtn.className = 'btn-close';
     closeBtn.textContent = '×';
@@ -197,10 +202,7 @@ class ChatSidebar {
 
     toolbar.appendChild(clearBtn);
     toolbar.appendChild(exportBtn);
-
-    const modelLabel = document.createElement('span');
-    modelLabel.className = 'model-label';
-    modelLabel.textContent = '模型';
+    toolbar.appendChild(pageTransBtn);
 
     this._modelSelect = document.createElement('select');
     this._modelSelect.className = 'model-select';
@@ -208,7 +210,6 @@ class ChatSidebar {
       chrome.runtime.sendMessage({ type: MSG.SWITCH_PROVIDER, payload: { id: this._modelSelect.value } });
     });
 
-    toolbar.appendChild(modelLabel);
     toolbar.appendChild(this._modelSelect);
     footer.appendChild(toolbar);
 

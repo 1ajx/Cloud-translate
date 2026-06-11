@@ -1,9 +1,17 @@
 import { MSG } from '../shared/constants.js';
 import { getActiveProvider, setActiveProviderId, getRolePrompt, getChatHistory, saveChatHistory } from './config-store.js';
-import { translate, chat } from './api-client.js';
+import { translate, chat, translateBatch } from './api-client.js';
 
 // 快捷键触发翻译
 chrome.commands.onCommand.addListener(async (command) => {
+  if (command === 'translate-page') {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id) {
+      chrome.tabs.sendMessage(tab.id, { type: MSG.PAGE_TRANSLATE_TOGGLE }).catch(() => {});
+    }
+    return;
+  }
+
   if (command !== 'translate-selection') return;
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -42,6 +50,23 @@ chrome.commands.onCommand.addListener(async (command) => {
 
 // 消息路由
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === MSG.PAGE_TRANSLATE) {
+    (async () => {
+      const [provider, rolePrompt] = await Promise.all([getActiveProvider(), getRolePrompt()]);
+      if (!provider) {
+        sendResponse({ error: '未配置任何模型，请先前往选项页添加 Provider。' });
+        return;
+      }
+      try {
+        const items = await translateBatch(message.payload.items, provider, rolePrompt);
+        sendResponse({ items });
+      } catch (e) {
+        sendResponse({ error: e.message });
+      }
+    })();
+    return true;
+  }
+
   if (message.type === MSG.SWITCH_PROVIDER) {
     setActiveProviderId(message.payload.id).then(() => sendResponse({ ok: true }));
     return true;

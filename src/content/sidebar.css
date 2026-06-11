@@ -317,13 +317,8 @@
   margin-top: 8px;
   border-top: 1px dashed #e2e0ef;
 }
-.model-label {
-  font-size: 12px;
-  color: #9ca3af;
-  flex-shrink: 0;
-  margin-left: auto;
-}
 .model-select {
+  margin-left: auto;
   font-size: 12px;
   padding: 3px 6px;
   border: 1px solid #e2e0ef;

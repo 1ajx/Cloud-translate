@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "云端模型划词翻译",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "使用自己的 API Key，自由切换云端大模型进行划词翻译",
   "permissions": ["storage", "activeTab"],
   "host_permissions": ["<all_urls>"],
@@ -17,6 +17,7 @@
         "src/libs/highlight.min.js",
         "src/libs/katex.min.js",
         "src/libs/katex-auto-render.min.js",
+        "src/content/page-translator.js",
         "src/content/index.js"
       ],
       "run_at": "document_idle"
@@ -38,6 +39,13 @@
         "mac": "Command+Shift+T"
       },
       "description": "翻译选中的文字"
+    },
+    "translate-page": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+X",
+        "mac": "Command+Shift+X"
+      },
+      "description": "整页翻译/还原"
     }
   },
   "icons": {

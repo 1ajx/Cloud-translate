@@ -87,6 +87,68 @@ export async function translate(text, provider, rolePrompt, onChunk, onDone, onE
 }
 
 /**
+ * 整页翻译：批量翻译多个文本块（非流式），要求模型保留占位符标记并按 JSON 返回。
+ * @param {Array<{id: string, text: string}>} items - 待翻译块
+ * @param {object} provider - Provider 配置对象
+ * @param {string} rolePrompt - 角色提示词（可选）
+ * @returns {Promise<Array<{id: string, text: string}>>} 译文数组（解析失败时整批重试一次，仍失败则抛错）
+ */
+export async function translateBatch(items, provider, rolePrompt) {
+  const url = `${provider.baseURL}/chat/completions`;
+  let systemContent =
+    '你是网页翻译引擎。用户输入一个 JSON 数组，每项形如 {"id":"...","text":"..."}。' +
+    '把每项的 text 翻译成中文（若已是中文则原样保留）。' +
+    'text 中形如 <x0>...</x0> 或 <x1/> 的标记必须在译文的对应位置原样保留，数量不得增减，标记内的文字照常翻译。' +
+    '只输出 JSON 数组，每项 {"id":"...","text":"译文"}，不要输出任何解释或代码块标记。';
+  if (rolePrompt) systemContent += `\n用户补充要求：${rolePrompt}`;
+
+  const body = JSON.stringify({
+    model: provider.model,
+    stream: false,
+    temperature: provider.temperature ?? 0.3,
+    max_tokens: provider.maxTokens ?? 4096,
+    messages: [
+      { role: 'system', content: systemContent },
+      { role: 'user', content: JSON.stringify(items) },
+    ],
+  });
+
+  const attempt = async () => {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${provider.apiKey}`,
+      },
+      body,
+    });
+    if (!response.ok) {
+      let msg = `HTTP ${response.status}`;
+      try {
+        const json = await response.json();
+        msg = json.error?.message || msg;
+      } catch {}
+      throw new Error(msg);
+    }
+    const json = await response.json();
+    let content = json.choices?.[0]?.message?.content || '';
+    // 容错：剥掉可能的 markdown 代码块包裹
+    content = content.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+    const parsed = JSON.parse(content);
+    if (!Array.isArray(parsed)) throw new Error('返回格式不是数组');
+    return parsed
+      .filter((it) => it && typeof it.id === 'string' && typeof it.text === 'string')
+      .map((it) => ({ id: it.id, text: it.text }));
+  };
+
+  try {
+    return await attempt();
+  } catch {
+    return await attempt(); // 整批重试一次
+  }
+}
+
+/**
  * 多轮聊天请求，支持 SSE 流式输出。
  * @param {Array} messages - OpenAI messages 数组（含历史）
  * @param {object} provider - Provider 配置对象
